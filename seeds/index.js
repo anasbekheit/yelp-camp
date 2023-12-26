@@ -1,7 +1,9 @@
+if(process.env.NODE_ENV !== "production"){
+    require('dotenv').config();
+}
 const mongoose = require('mongoose');
 const cities = require('./cities');
 const {places, descriptors} = require('./seedHelpers');
-const api = require('./api-keys.json');
 const Campground = require('../models/campground');
 const fetch = require('node-fetch');
 mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp', {
@@ -20,8 +22,8 @@ db.once("open", () => {
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 async function fetchRandomPhoto(query, width, height) {
-    const apiKey = api.unsplash.key;
-    const apiUrl = api.unsplash.url;
+    const apiKey = process.env.UNSPLASH_KEY;
+    const apiUrl = process.env.UNSPLASH_URL;
     const endPoint = `${apiUrl}/photos/random?query=${query}&client_id=${apiKey}`;
 
     try {
@@ -41,7 +43,7 @@ async function fetchRandomPhoto(query, width, height) {
 
 const seedDB = async () => {
     await Campground.deleteMany({});
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 10; i++) {
         const ownerID = "658a05af02ebf55ff0fbffe7";
         const price = Math.floor(Math.random() * 30) + 20;
         const random1000 = Math.floor(Math.random() * 1000);
