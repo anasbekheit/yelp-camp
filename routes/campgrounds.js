@@ -1,6 +1,4 @@
 const express = require('express');
-const Campground = require('../models/campground');
-require('../utils/ExpressError');
 const catchAsync = require('../utils/catchAsync');
 const {isLoggedIn, validateCampground, isOwner} = require("../utils/middleware");
 const campgrounds = require("../controllers/campgrounds");
@@ -8,21 +6,19 @@ const campgrounds = require("../controllers/campgrounds");
 
 const router = express.Router();
 
-router.get('/', catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render('campgrounds/index', {campgrounds});
-}));
+router.get('/', catchAsync(campgrounds.renderAllCampgrounds));
 
-router.get('/new', isLoggedIn, campgrounds.renderNewCampground)
+router.route('/new')
+    .get(isLoggedIn, campgrounds.renderNewCampground)
+    .post(isLoggedIn, validateCampground, catchAsync(campgrounds.newCampground))
 
-router.post('/new', isLoggedIn, validateCampground, catchAsync(campgrounds.newCampground))
+router.route('/:id')
+    .get(catchAsync(campgrounds.renderShowCampground))
+    .delete(isLoggedIn, isOwner, catchAsync(campgrounds.destroyCampground))
 
-router.get('/:id', catchAsync(campgrounds.renderShowCampground));
+router.route('/:id/edit')
+    .get(isLoggedIn, isOwner, catchAsync(campgrounds.renderEditCampground))
+    .put(isLoggedIn, isOwner, validateCampground, catchAsync(campgrounds.editCampground))
 
-router.get('/:id/edit', isLoggedIn, isOwner, catchAsync(campgrounds.renderEditCampground))
-
-router.put('/:id/edit', isLoggedIn, isOwner, validateCampground, catchAsync(campgrounds.editCampground));
-
-router.delete('/:id', isLoggedIn, isOwner, catchAsync(campgrounds.destroyCampground));
 
 module.exports = router;

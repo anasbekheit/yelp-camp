@@ -1,5 +1,9 @@
 const Campground = require("../models/campground");
 
+async function renderAllCampgrounds(req, res){
+    const campgrounds = await Campground.find({});
+    res.render('campgrounds/index', {campgrounds});
+}
 function renderNewCampground(req, res) {
     res.render('campgrounds/new');
 }
@@ -48,4 +52,4 @@ async function destroyCampground(req, res){
     req.flash('success', 'Campground removed!');
     res.redirect('/campgrounds');
 }
-module.exports = {renderNewCampground, newCampground, renderShowCampground, renderEditCampground, editCampground, destroyCampground}
+module.exports = {renderAllCampgrounds, renderNewCampground, newCampground, renderShowCampground, renderEditCampground, editCampground, destroyCampground}

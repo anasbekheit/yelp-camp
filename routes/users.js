@@ -7,15 +7,15 @@ const users = require('../controllers/users');
 
 const router = express.Router();
 
-router.get('/register', users.renderRegisterUser);
+router.route('/register')
+    .get(users.renderRegisterUser)
+    .post(catchAsync(users.registerUser));
 
-router.post('/register', catchAsync(users.registerUser));
-
-router.get('/login', users.renderLoginUser)
-
-router.post('/login', storeReturnTo,
-    passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Incorrect username and/or password'}),
-    users.redirectLogin)
+router.route('/login')
+    .get(users.renderLoginUser)
+    .post(storeReturnTo,
+        passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Incorrect username and/or password'}),
+        users.redirectLogin)
 
 router.get('/logout', users.logout);
 
