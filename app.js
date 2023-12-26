@@ -75,7 +75,7 @@ app.use((req, res, next) => {
 
     // Keeping track of original url, incase the user logs in he should be redirected to returnTo
 
-    if (!['/', '/login'].includes(req.originalUrl)){ // Save history if you are not coming from login (prevent infinite loop)
+    if (!['/', '/login', '/register'].includes(req.originalUrl)){ // Save history if you are not coming from login (prevent infinite loop)
         req.session.returnTo = req.originalUrl;
     }
 
