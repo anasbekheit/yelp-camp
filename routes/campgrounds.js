@@ -22,7 +22,7 @@ router.route('/:id')
 
 router.route('/:id/edit')
     .get(isLoggedIn, isOwner, catchAsync(campgrounds.renderEditCampground))
-    .put(isLoggedIn, isOwner, validateCampground, catchAsync(campgrounds.editCampground));
+    .put(isLoggedIn, isOwner, upload.array('image'), validateCampground, catchAsync(campgrounds.editCampground));
 
 
 module.exports = router;
