@@ -21,11 +21,6 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="image">Add Images</label>
-                <input type="file" name="image" multiple>
-            </div>
-
-            <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
                 <textarea class="form-control" type="text" id="description" name="campground[description]" required><%= campground.description %></textarea>
                 <div class="valid-feedback">Looks valid!</div>
@@ -43,6 +38,12 @@
                     <div class="valid-feedback">Looks valid!</div>
                 </div>
             </div>
+
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label">Add image(s)...</label>
+                <input class="form-control" type="file" id="image" name="image" multiple>
+            </div>
+
             <div class="mb-3">
                 <button class="btn btn-info">Update Campground</button>
             </div>
