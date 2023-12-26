@@ -1,6 +1,8 @@
 const {reviewSchema, campgroundSchema} = require("../schemas");
 const ExpressError = require("./ExpressError");
 const Campground = require("../models/campground");
+const Review = require("../models/review");
+
 
 async function isLoggedIn(req, res, next){
     if(!req.isAuthenticated()){
@@ -47,4 +49,13 @@ const validateReview = (req, res, next) => {
         next();
     }
 }
-module.exports = {isLoggedIn, storeReturnTo, validateCampground, validateReview, isOwner}
+async function isAuthor(req, res, next){
+    const {id, reviewId} = req.params;
+    const user = req.user;
+    const review = await Review.findById(reviewId);
+    if(!review.author._id.equals(user._id)){
+        return res.redirect(`/campgrounds/${id}`);  //If the user doesn't own campground redirect him.
+    }
+    next();
+}
+module.exports = {isLoggedIn, storeReturnTo, validateCampground, validateReview, isOwner, isAuthor}
