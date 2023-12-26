@@ -14,7 +14,6 @@ const usersRoutes = require('./routes/users');
 
 // AUTHENTICATION
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 
 
@@ -103,7 +102,7 @@ app.all('*', (req, res, next) => {
 });
 
 // Error Handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     const {statusCode = 500} = err;
     if (!err.message) err.message = 'Oh No, Something Went Wrong!';
     res.status(statusCode).render('stacktrace', {err}); // FOR DEBUGGING PURPOSES.

@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-6">
         <div class="card mb-3">
-            <img src="<%= campground.image %>" class="card-img-top">
+            <img src="<%= campground.image %>" class="card-img-top" alt="<%= campground.title%> image.">
             <div class="card-body">
                 <h5 class="card-title">
                     <%= campground.title %>
@@ -49,7 +49,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="author" class="form-label">Author</label>
-                        <input name="review[author]" id="author" type="text" class="form-control" required></input>
+                        <input name="review[author]" id="author" type="text" class="form-control" required>
                         <div class="valid-feedback">Looks valid!</div>
                     </div>
                     <div class="mb-3">

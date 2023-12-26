@@ -6,7 +6,7 @@ const catchAsync = require('../utils/catchAsync');
 const { storeReturnTo } = require('../utils/middleware');
 
 
-router.get('/register', function (req, res, next) {
+router.get('/register', function (req, res) {
     res.render('./users/register');
 });
 
