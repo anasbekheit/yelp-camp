@@ -2,8 +2,27 @@
 <link rel="stylesheet" href="/stylesheets/star.css">
 <div class="row">
     <div class="col-6">
+        <div id="campgroundCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <% campground.images.forEach((img, i) => {  %>
+                 <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
+                        <img src="<%= img.url%>" class="d-block w-100" alt="">
+                    </div>
+                <% }) %>
+
+            </div>
+            <% if(campground.images.length > 1) {%>
+                <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            <% } %>
+        </div>
         <div class="card mb-3">
-            <img src="<%= campground.image %>" class="card-img-top" alt="<%= campground.title%> image.">
             <div class="card-body">
                 <h5 class="card-title">
                     <%= campground.title %>
@@ -46,8 +65,8 @@
                 <form action="/campgrounds/<%= campground._id %>/reviews" class="needs-validation" method="POST"
                       novalidate>
                     <div class="mb-3">
-                        <label for="rating" class="form-label">Rating: </label>
-                        <fieldset class="starability-basic">
+                        <label for="no-rate" class="form-label"><b>Rating</b></label>
+                        <fieldset class="starability-basic" id="rating">
                             <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
                             <input type="radio" id="rate1" name="review[rating]" value="1" />
                             <label for="rate1" title="Terrible">1 star</label>
@@ -75,7 +94,7 @@
         </div>
         <%}%>
         <div id="reviews">
-            <% for( review of campground.reviews ) { %>
+            <% for( let review of campground.reviews ) { %>
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title"><%= review.author.username %></h5>

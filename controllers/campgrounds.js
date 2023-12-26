@@ -10,6 +10,7 @@ function renderNewCampground(req, res) {
 
 async function newCampground (req, res){
     const campground = new Campground(req.body.campground);
+    campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.owner = req.user._id;
     await campground.save();
     req.flash('success', 'Campground successfully created!');

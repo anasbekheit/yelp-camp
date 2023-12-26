@@ -49,13 +49,22 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000);
         const titleDesc = sample(descriptors);
         const titlePlace = sample(places);
-        const query = `${titleDesc},${titlePlace}`;
-        const imgUrl = await fetchRandomPhoto(query, 300, 300);
+        // const query = `${titleDesc},${titlePlace}`;
+        // const imgUrl = await fetchRandomPhoto(query, 300, 300);
         const camp = new Campground({
             owner: ownerID,
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${titleDesc} ${titlePlace}`,
-            image: imgUrl,
+            images: [
+                {
+                url: 'https://res.cloudinary.com/dksuv4ccx/image/upload/v1703623199/YelpCamp/vbuhsmbpl6ppkqo2ao0c.jpg',
+                filename: 'YelpCamp/vbuhsmbpl6ppkqo2ao0c'
+                },
+                {
+                url: 'https://res.cloudinary.com/dksuv4ccx/image/upload/v1703623199/YelpCamp/xt6oxygwlzaamlawejnw.jpg',
+                filename: 'YelpCamp/xt6oxygwlzaamlawejnw'
+                }
+            ],
             description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla maiores ullam, sit facere velit repellendus eum delectus blanditiis consequatur, ad quidem quibusdam quisquam rerum placeat aut et asperiores tenetur dicta?`,
             price: price
         })
