@@ -1,28 +1,10 @@
 const express = require('express');
 const Campground = require('../models/campground');
-const ExpressError = require('../utils/ExpressError');
+require('../utils/ExpressError');
 const catchAsync = require('../utils/catchAsync');
-const {campgroundSchema} = require('../schemas.js');
-const {isLoggedIn} = require("../utils/middleware");
+const {isLoggedIn, validateCampground, isOwner} = require("../utils/middleware");
 
-function validateCampground (req, res, next){
-    const {error} = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
-async function isOwner(req, res, next){
-    const campgroundId = req.params.id;
-    const user = req.user;
-    const campground = await Campground.findById(campgroundId);
-    if(!campground.owner._id.equals(user._id)){
-        return res.redirect(`/campgrounds/${campgroundId}`);  //If the user doesn't own campground redirect him.
-    }
-    next();
-}
+
 const router = express.Router();
 
 router.get('/', catchAsync(async (req, res) => {
