@@ -62,7 +62,8 @@ async function editCampground(req, res) {
 
 async function destroyCampground(req, res){
     const {id} = req.params;
-    await Campground.findByIdAndDelete(id);
+    const campground = await Campground.findByIdAndDelete(id);
+    campground.images.map(image => cloudinary.uploader.destroy(image.filename));
     req.flash('success', 'Campground removed!');
     res.redirect('/campgrounds');
 }
