@@ -1,5 +1,6 @@
 const Campground = require("../models/campground");
 const {cloudinary} = require("../cloudinary");
+const {geoCode} = require('../utils/forwardGeoCode');
 
 async function renderAllCampgrounds(req, res){
     const campgrounds = await Campground.find({});
@@ -10,7 +11,10 @@ function renderNewCampground(req, res) {
 }
 
 async function newCampground (req, res){
+    const location = req.body.campground.location;
+    const geoJson = await geoCode(location);
     const campground = new Campground(req.body.campground);
+    campground.geometry = geoJson;
     campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.owner = req.user._id;
     await campground.save();
