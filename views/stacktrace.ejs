@@ -13,12 +13,10 @@
                 <use xlink:href="#exclamation-triangle-fill"/>
             </svg>
             <div>
-                <h4 class="alert-heading">
-                    <%= err.message %>
-                </h4>
-                <p>
-                    <%= err.stack %>
-                </p>
+                <h4 class="alert-heading"><%= err.message %></h4>
+                <%if (process.env.NODE_ENV !== "production"){%>
+                    <p><%= err.stack %></p>
+                <%}%>
             </div>
         </div>
     </div>
