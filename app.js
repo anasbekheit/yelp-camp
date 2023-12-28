@@ -10,6 +10,9 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+
 
 // ROUTERS
 const campgroundsRoutes = require('./routes/campgrounds');
@@ -49,12 +52,24 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 
+// Security
+app.use(
+    mongoSanitize({
+        onSanitize: ({ req, key }) => {
+            console.warn(`This request[${key}] is sanitized`, req);
+        },
+    })
+);
+app.use(helmet({
+    contentSecurityPolicy: false
+}));
 // Set static paths
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Session settings
 const sessionConfig = {
-    secret: 'thisshouldbeabettersecret!',
+    name: 'session',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
