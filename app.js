@@ -61,9 +61,41 @@ app.use(
         },
     })
 );
-app.use(helmet({
-    contentSecurityPolicy: false
-}));
+
+const scriptSrcUrls = [
+    "https://cdn.jsdelivr.net",
+];
+
+const styleSrcUrls = [
+    "https://cdn.jsdelivr.net",
+]
+
+const imgSrcUrls = [
+    `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`,
+    "https://images.unsplash.com/",
+    "https://upload.wikimedia.org"
+]
+
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'"],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                ...imgSrcUrls
+            ],
+            fontSrc: ["'self'"],
+        },
+    })
+);
+
 // Set static paths
 app.use(express.static(path.join(__dirname, 'public')))
 
